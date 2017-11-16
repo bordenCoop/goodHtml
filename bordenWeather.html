@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="//fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css">
+	<meta content="600" http-equiv="refresh">
+	<style type="text/css">
+	  
+	   body { 
+	       background-color:black;
+	       color:white;
+	       margin:200px;
+	   }    
+	   #overflow {
+	       overflow-y: visible;
+	       overflow-x: visible;
+	   }
+	   * {
+	       overflow-y: hidden;
+	       overflow-x: hidden;
+	   }      
+	   #weatherIcon, city, temp, synopsis, overFlow {
+	       position:absolute; 
+	   }
+	   #weatherIcon {
+	       overflow-x:visible;
+	       overflow-y:visible;
+	       position:absolute;
+	       width:90px; 
+	       height:90px; 
+	       left: 15px; 
+	       top: 12px;
+	   } 
+	   #city {
+	       font-size:28px; 
+	       position:absolute; 
+	       width:238px; 
+	       height:28px; 
+	       left: 255px; 
+	       top: 35px;
+	   }
+	   #temp {
+	       font-size:90px; 
+	       position:absolute; 
+	       width:233px:
+	       height:48px; 
+	       left: 250px; 
+	       top: 48px;
+	   }
+	   #synopsis {
+	       font-size:22px; 
+	       position:absolute; 
+	       width:268px; 
+	       height:28px; 
+	       left: 255px; 
+	       top: 160px;
+	   } 
+	   img {
+	       height:200px;
+	       width:200px;       
+	   } 
+	   div {
+	       font-family: "Droid Serif";
+	   }
+	</style>
+	<meta charset="utf-8">
+	<title>Weather</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.1/jquery.min.js">
+	</script>
+	<script>
+	function getweather() // weather api key : e529c71a6b29bb50
+	{  
+	   $.ajax({ url :"http://api.wunderground.com/api/e529c71a6b29bb50/geolookup/conditions/q/ontario/barrie.json",
+	   dataType : "jsonp",
+	   success : function(parsed_json) 
+	               {
+	               var humid = parsed_json ['current_observation']['relative_humidity'];
+	               var location = parsed_json['location']['city'];
+	               var temp_f = parsed_json['current_observation']['temp_f'];
+	               var temp_c = parsed_json['current_observation']['temp_c'];
+	               var synopsis = parsed_json['current_observation']['weather']; 
+	               var wind = parsed_json['current_observation']['wind_string'];
+
+	               $("#temp").html(temp_c+"<sup>o<\/sup>C" );
+	               $("#humid").html("Humidity: "+humid);
+	               $("#city").html(location+", Ontario");
+	               $("#synopsis").html(synopsis);
+	               $("#wind").html( "Wind: " + wind);
+	                   
+	               if (synopsis == 'Partly Cloudy') { $('#weatherIcon').html('<img src="images/m-cloudy.png"/>'); }
+	               if (synopsis == 'Drizzle') { $('#weatherIcon').html('<img src="images/fair-drizzle.png" />'); }
+	               if (synopsis == 'Rain') { $('#weatherIcon').html('<img src="images/rainy.png" />'); }
+	               if (synopsis == 'Snow') { $('#weatherIcon').html('<img src="images/snow.png" />'); }
+	               if (synopsis == 'Mist') { $('#weatherIcon').html('<img src="images/fair-drizzle.png" />'); }
+	               if (synopsis == 'Thunderstorm') { $('#weatherIcon').html('<img src="images/thunderstorm.png" />'); }
+	               if (synopsis == 'Overcast') { $('#weatherIcon').html('<img src="images/fair.png" />'); }
+	               if (synopsis == 'Clear') { $('#weatherIcon').html('<img src="images/sunny2.png" />'); }
+                   if (synopsis == 'Mostly Cloudy') { $('#weatherIcon').html('<img src="images/fair.png" />'); }
+                   if (synopsis == '') { $('#weatherIcon').html('<img src="images/na.png" />'); }
+                   }
+	          });
+	};
+	</script>
+</head>
+<body>
+	<script>
+	       getweather();
+	</script>
+	<div id="weatherblock">
+		<div id="temp"></div>
+		<div id="city"></div>
+		<div id="synopsis"></div>
+		<div id="weatherIcon"></div>
+	</div><!--
+<div id="humid" style="position:absolute; font-size:22px; width:238px; height:28px; left: 17px; top: 130px;"></div>
+<div id="wind" style="position:absolute; font-size:22px; width:238px; height:50px; left: 17px; top: 160px;"></div>  
+-->
+</body>
+</html>
